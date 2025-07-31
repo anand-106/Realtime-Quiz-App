@@ -1,0 +1,79 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User {
+  id String @id @default(uuid())
+  name String
+  email String @unique
+  password String
+  role String @default("USER")
+  quiz Quiz[]
+  results Result[]
+  leaderbords LeaderBoard[]
+}
+
+model Quiz {
+  id String @id @default(uuid())
+  quizName String
+  adminId String 
+  isLive Boolean @default(true)
+  liveAt DateTime @default(now())
+  admin User @relation(fields: [adminId],references: [id])
+  questions Question[]
+  leaderbords LeaderBoard[]
+}
+
+model Question {
+  id String @id @default(uuid())
+  position Int @default(autoincrement())
+  text String
+  answer String
+  quizId String
+  quiz Quiz @relation(fields: [quizId],references: [id])
+  options Option[]
+  results Result[]
+}
+
+model Option {
+  id String @id @default(uuid())
+  text String
+  qId String
+  question Question @relation(fields: [qId],references: [id])
+}
+
+model Result {
+  id String @id @default(uuid())
+  userId String
+  qid String
+  answer String
+  isCorrect Boolean
+  
+  user User @relation(fields: [userId],references: [id])
+  question Question @relation(fields: [qid],references: [id])
+
+}
+
+model LeaderBoard {
+  id String @id @default(uuid())
+  quizId String
+  userId String
+  name String
+  score Int
+  total Int
+  quiz Quiz @relation(fields: [quizId],references: [id])
+  user User @relation(fields: [userId],references: [id])
+}
