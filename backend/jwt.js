@@ -2,9 +2,8 @@ const jwt = require("jsonwebtoken");
 const JWT_SECRET = "jsgfhsvcjhvshcvsghj";
 
 function jwtVerify(req, res, next) {
-  const token = req.headers.authorization;
+  const token = req.budy.authorization;
 
-  console.log("the token is", token);
 
   jwt.verify(token, JWT_SECRET, (err, decoded) => {
     if (err) return res.json({ error: "invalid or expired token" });
