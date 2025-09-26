@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const JWT_SECRET = "jsgfhsvcjhvshcvsghj";
 
 function jwtVerify(req, res, next) {
-  const token = req.headers.authorization;
+  const token = req.budy.authorization;
 
 
   jwt.verify(token, JWT_SECRET, (err, decoded) => {
