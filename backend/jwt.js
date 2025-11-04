@@ -7,7 +7,7 @@ function jwtVerify(req, res, next) {
 
   jwt.verify(token, JWT_SECRET, (err, decoded) => {
     if (err) return res.json({ error: "invalid expired token" });
-    console.log("the decoded token is:", decoded);
+    console.log("the decoded token :", decoded);
     req.email = decoded.email;
     req.role = decoded.role;
     next();
